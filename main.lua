@@ -5,6 +5,7 @@ local k = 8
 local chessboard
 local matrix = {}
 local queen, empty = 'Q', 0
+local queen_img = love.graphics.newImage('queen.png')
 
 local function build_board()
    local matrix = {}
@@ -89,14 +90,17 @@ function love.draw()
    local function draw_queens()
       local sqr_w = 600 / k
       local sqr_h = 600 / k
-      local radius = (600 / k) / 2
+      local scale_x, scale_y = queen_img:getDimensions()
+      local origin_x, origin_y = scale_x, scale_y
+      scale_x = sqr_w/scale_x
+      scale_y = sqr_h/scale_y
+      origin_x = origin_x/2
+      origin_y = origin_y/2
       for i=1, k do
          for j=1, k do
             if matrix[i][j] == queen then
                love.graphics.setColor(255,255,255)
-               love.graphics.circle('fill', (j-1)*sqr_w+(sqr_w/2), (i-1)*sqr_h+(sqr_h/2), radius)
-               love.graphics.setColor(0,0,0)
-               love.graphics.circle('line', (j-1)*sqr_w+(sqr_w/2), (i-1)*sqr_h+(sqr_h/2), radius)
+               love.graphics.draw(queen_img, (j-1)*sqr_w+(sqr_w/2), (i-1)*sqr_h+(sqr_h/2), 0, scale_x, scale_y, origin_x, origin_y)
             end
          end
       end
