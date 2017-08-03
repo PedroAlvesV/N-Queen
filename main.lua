@@ -1,0 +1,110 @@
+local MinimalBoard = require 'MinimalBoard'
+
+local k = 8
+
+local chessboard
+local matrix = {}
+local queen, empty = 'Q', 0
+
+local function build_board()
+   local matrix = {}
+   for i=1, k do
+      matrix[i] = {}
+      for j=1, k do
+         matrix[i][j] = not ((i%2 == 0 and j%2 ~= 0) or (j%2 == 0 and i%2 ~= 0)) -- handles the checker pattern
+      end
+   end
+   local proprieties = {
+      color_on = {255,216,170},
+      color_off = {190,100,0},
+      coord = {0,0,600,600},
+      outline = true
+   }
+   chessboard = MinimalBoard.new(matrix, proprieties)
+end
+
+local function set_matrix()
+   for i=1, k do
+      matrix[i] = {}
+      for j=1, k do
+         matrix[i][j] = empty
+      end
+   end
+end
+
+local function write_board()
+   for i=1, k do
+      for j=1, k do
+         io.write(" "..matrix[i][j].." ")
+      end
+      print()
+   end
+   print(' ----------------------')
+end
+
+local function add_queen(n)
+   local function check_square(x,y)
+      for i=1, n do
+         if matrix[i][y] == queen then
+            return false
+         end
+      end
+      for i=1, k do
+         for j=1, k do
+            if (i-j == x-y) or (i+j == x+y) then
+               if matrix[i][j] == queen then
+                  return false
+               end
+            end
+         end
+      end
+      return true
+   end
+   write_board()
+   if n > k then
+      return true
+   end
+   for j=1, k do
+      if check_square(n,j) then
+         matrix[n][j] = queen
+         if add_queen(n+1) then
+            return true
+         else
+            matrix[n][j] = empty
+         end
+      end
+   end
+   return false
+end
+
+function love.load()
+   build_board()
+   set_matrix()
+   add_queen(1)
+end
+
+function love.update(dt) end
+
+function love.draw()
+   local function draw_queens()
+      local sqr_w = 600 / k
+      local sqr_h = 600 / k
+      local radius = (600 / k) / 2
+      for i=1, k do
+         for j=1, k do
+            if matrix[i][j] == queen then
+               love.graphics.setColor(255,255,255)
+               love.graphics.circle('fill', (j-1)*sqr_w+(sqr_w/2), (i-1)*sqr_h+(sqr_h/2), radius)
+               love.graphics.setColor(0,0,0)
+               love.graphics.circle('line', (j-1)*sqr_w+(sqr_w/2), (i-1)*sqr_h+(sqr_h/2), radius)
+            end
+         end
+      end
+   end
+   love.graphics.setBackgroundColor(128, 128, 128)
+   chessboard:draw()
+   draw_queens()
+   love.graphics.setColor(0,0,0)
+   love.graphics.setFont(love.graphics.newFont(30))
+   love.graphics.print("k = "..k, 604)
+end
