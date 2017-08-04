@@ -78,10 +78,56 @@ local function add_queen(n)
    return false
 end
 
+local function rotate()
+   local rotated = {}
+   for i=1, k do
+      rotated[i] = {}
+      for j=1, k do
+         rotated[i][j] = matrix[k-j+1][i]
+      end
+   end
+   return rotated
+end
+
+local function flip(direction)
+   local flipped = {}
+   if direction == 'vertical' then
+      for i=1, k do
+         flipped[i] = {}
+         for j=1, k do
+            flipped[i][j] = matrix[k-i+1][j]
+         end
+      end
+   elseif direction == 'horizontal' then
+      for i=1, k do
+         flipped[i] = {}
+         for j=1, k do
+            flipped[i][j] = matrix[i][k-j+1]
+         end
+      end
+   end
+   return flipped
+end
+
 function love.load()
    build_board()
    set_matrix()
    add_queen(1)
+end
+
+function love.keypressed(key)
+   if key == ('left') or key == ('right') then
+      matrix = flip('horizontal')
+   end
+   if key == ('up') or key == ('down') then
+      matrix = flip('vertical')
+   end
+   if key == ('r') then
+      matrix = rotate()
+      if love.keyboard.isDown('rshift') or love.keyboard.isDown('lshift') then
+         matrix = rotate(); matrix = rotate()
+      end
+   end
 end
 
 function love.update(dt) end
