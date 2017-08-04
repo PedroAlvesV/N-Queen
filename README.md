@@ -1,7 +1,11 @@
 # N-Queen
 N-Queen Problem solver with LÖVE
 
+## Features
+* Rotation (clockwise and anti-clockwise)
+* Flipping (vertically and horizontally)
+
 ## TODO
-* Reset option to search for another solution
-* Flipping (rotation and reflection) current solution
 * Filter for explicit solutions
+* Reset option to search for another solution
+* Solution exportation
