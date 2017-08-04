@@ -1,5 +1,5 @@
-# N-Queen
-N-Queen Problem solver with LÖVE
+# N-Queens
+N-Queens Problem solver with LÖVE
 
 ## Features
 * Rotation (clockwise and anti-clockwise)
