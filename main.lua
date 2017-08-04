@@ -156,5 +156,15 @@ function love.draw()
    draw_queens()
    love.graphics.setColor(0,0,0)
    love.graphics.setFont(love.graphics.newFont(30))
+   local instruc = [[Instructions
+   r: Rotate 90°
+   shift+r: Rotate -90°
+   up/down: Flip vertically
+   left/right: Flip horizontally
+   ]]
+   --space: another solution
+   --]]
    love.graphics.print("k = "..k, 604)
+   love.graphics.setFont(love.graphics.newFont(14))
+   love.graphics.print(instruc, 608, 50)
 end
